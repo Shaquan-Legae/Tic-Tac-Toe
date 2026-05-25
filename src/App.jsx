@@ -3,22 +3,39 @@ import Board from "./components/Board.jsx";
 import MoveHistory from "./components/MoveHistory.jsx";
 import Scoreboard from "./components/Scoreboard.jsx";
 import Status from "./components/Status.jsx";
-import { gameReducer, initialGameState } from "./gameReducer.js";
+import { createInitialGameState, gameReducer } from "./gameReducer.js";
 import { getGameStatus } from "./utils/gameLogic.js";
 
 function App() {
-  const [state, dispatch] = useReducer(gameReducer, initialGameState);
+  const [state, dispatch] = useReducer(
+    gameReducer,
+    undefined,
+    createInitialGameState,
+  );
   const currentBoard = state.history[state.currentMove];
-  const status = getGameStatus(currentBoard, state.currentMove);
+  const status = getGameStatus(
+    currentBoard,
+    state.currentMove,
+    state.startingPlayer,
+  );
 
   return (
-    <main className="app-shell">
+    <main className="app-shell" data-theme={state.theme}>
       <section className="game-card" aria-labelledby="game-title">
         <div className="game-header">
-          <div>
-            <p className="eyebrow">Frontend Internship Rubric</p>
-            <h1 id="game-title">Tic-Tac-Toe</h1>
-          </div>
+          <h1 id="game-title">Tic-Tac-Toe</h1>
+
+          <button
+            className="theme-toggle"
+            type="button"
+            aria-label={`Switch to ${state.theme === "dark" ? "light" : "dark"} mode`}
+            onClick={() => dispatch({ type: "TOGGLE_THEME" })}
+          >
+            {state.theme === "dark" ? "☾" : "☀︎"}
+          </button>
+        </div>
+
+        <div className="game-actions">
           <button
             className="restart-button"
             type="button"

@@ -2,25 +2,22 @@ function MoveHistory({ history, currentMove, onJumpToMove }) {
   return (
     <section className="panel-section" aria-labelledby="history-title">
       <h2 id="history-title">Move History</h2>
-      <ol className="move-list">
+
+      <select
+        className="move-select"
+        value={currentMove}
+        onChange={(event) => onJumpToMove(Number(event.target.value))}
+      >
         {history.map((_, move) => {
-          const label = move === 0 ? "Go to game start" : `Go to move #${move}`;
-          const isCurrentMove = move === currentMove;
+          const label = move === 0 ? "Game Start" : `Move ${move}`;
 
           return (
-            <li key={move}>
-              <button
-                className={`history-button${isCurrentMove ? " active" : ""}`}
-                type="button"
-                aria-current={isCurrentMove ? "step" : undefined}
-                onClick={() => onJumpToMove(move)}
-              >
-                {label}
-              </button>
-            </li>
+            <option key={move} value={move}>
+              {label}
+            </option>
           );
         })}
-      </ol>
+      </select>
     </section>
   );
 }

@@ -26,10 +26,15 @@ export function calculateWinner(board) {
   return null;
 }
 
-export function getGameStatus(board, currentMove) {
+export function getGameStatus(board, currentMove, startingPlayer) {
   const winner = calculateWinner(board);
   const isDraw = !winner && board.every(Boolean);
-  const nextPlayer = currentMove % 2 === 0 ? "X" : "O";
+  const nextPlayer =
+    currentMove % 2 === 0
+      ? startingPlayer
+      : startingPlayer === "X"
+        ? "O"
+        : "X";
 
   if (winner) {
     return {
